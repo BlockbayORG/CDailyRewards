@@ -1,0 +1,43 @@
+# MiniMessage format (https://docs.advntr.dev/minimessage). Legacy & codes also work.
+prefix: "<gradient:#FFD700:#FFA500><b>Daily</b></gradient> <dark_gray>»</dark_gray> "
+
+no-permission: "<red>You don't have permission."
+players-only: "<red>Players only."
+player-not-found: "<red>Player not found."
+reloaded: "<green>Config reloaded."
+
+claimed: "<green>You claimed <yellow>Day %day%</yellow>!"
+not-ready: "<red>Next reward in <yellow>%time_left%</yellow>."
+finished: "<gray>You finished every daily reward. Well done!"
+need-playtime: "<red>Play <yellow>%minutes%</yellow> more minutes to claim."
+inventory-full: "<red>Your inventory is full."
+inventory-full-dropped: "<yellow>Inventory full, some items dropped at your feet."
+join-ready: "<green>Your <yellow>Day %day%</yellow> reward is ready! <click:run_command:/daily><u>Click here</u></click> or type <yellow>/daily</yellow>."
+streak-lost: "<red>You missed a day, your progress was reset."
+
+voucher-redeemed: "<green>Voucher redeemed."
+voucher-duplicate: "<red>This voucher was already redeemed. Duplicate removed."
+voucher-no-permission: "<red>You can't redeem this voucher."
+voucher-unknown: "<red>Unknown voucher: %id%"
+voucher-given: "<green>Gave <yellow>%amount%x %id%</yellow> to <yellow>%player%</yellow>."
+
+admin-reset: "<green>Reset <yellow>%player%</yellow>."
+admin-setday: "<green>Set <yellow>%player%</yellow> to day <yellow>%day%</yellow>."
+admin-skip: "<green><yellow>%player%</yellow> can claim now."
+admin-give: "<green>Gave day <yellow>%day%</yellow> rewards to <yellow>%player%</yellow>."
+admin-invalid-day: "<red>Day must be 1-%max%."
+admin-info:
+  - "<gold><b>%player%</b>"
+  - "<gray>Day: <white>%day%</white>  Streak: <white>%streak%</white>  Total: <white>%total%</white>"
+  - "<gray>Last claim: <white>%last%</white>"
+  - "<gray>Can claim: <white>%can_claim%</white>"
+admin-help:
+  - "<gold><b>CDailyRewards admin</b>"
+  - "<yellow>/cdr reload"
+  - "<yellow>/cdr reset <player>"
+  - "<yellow>/cdr setday <player> <day>"
+  - "<yellow>/cdr skipcooldown <player>"
+  - "<yellow>/cdr give <player> <day>"
+  - "<yellow>/cdr voucher give <player> <id> [amount]"
+  - "<yellow>/cdr info <player>"
+

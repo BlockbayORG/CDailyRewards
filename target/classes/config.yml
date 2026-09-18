@@ -1,0 +1,50 @@
+# CDailyRewards main config
+
+# YAML (one file per player) or SQLITE (data.db)
+storage: YAML
+
+# Total days in the calendar. Must have matching entries in rewards.yml.
+days: 30
+
+# ROLLING_24H: next claim 24h after the last claim (a missed day = no claim within 48h of the last one)
+# FIXED_RESET: next claim after the daily reset time below
+cooldown-mode: ROLLING_24H
+# Only used by FIXED_RESET
+reset-time: "00:00"
+timezone: "Europe/London"
+
+# What happens when a player skips a whole day
+# RESET: back to day 1, streak 0
+# KEEP: keep day, streak 0
+# PAUSE: keep day and streak
+# GO_BACK_N: lose `go-back-days` days, streak 0
+on-miss: RESET
+go-back-days: 3
+# Extra hours before a miss counts
+grace-hours: 0
+
+# After the last day: RESTART (back to day 1), LOOP_LAST (repeat last day), STOP (no more rewards)
+after-last-day: RESTART
+
+# Minutes of playtime needed since the last claim (0 = off). Bypass: cdr.bypass.playtime
+require-playtime: 0
+
+# Tell players on join when a reward is ready
+join-notify:
+  enabled: true
+  delay-ticks: 60
+  sound: BLOCK_NOTE_BLOCK_PLING
+
+# Full inventory: DROP items at feet, or DENY the claim
+full-inventory: DROP
+
+# Scales money, xp and item amounts. Permission: cdr.multiplier.<name>. Highest wins.
+multipliers:
+  vip: 1.5
+  mvp: 2.0
+
+# Default effects when claiming
+claim-effects:
+  sound: ENTITY_PLAYER_LEVELUP
+  particle: TOTEM_OF_UNDYING
+  particle-count: 40

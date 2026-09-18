@@ -1,0 +1,278 @@
+# Rewards per day. Reward types:
+#   command:  { type: command, as: console|player, command: "...", display-name: "..." }
+#   item:     { type: item, item: { material, amount, name, lore, enchants, flags, custom-model-data, glow, unbreakable, skull } }
+#   voucher:  { type: voucher, id: <id from vouchers.yml>, amount: 1 }
+#   money:    { type: money, amount: 500 } or amount: "250-750"   (needs Vault)
+#   xp:       { type: xp, levels: 5 } or { type: xp, points: 100 }
+#   message:  { type: message, text: "..." }   broadcast: { type: broadcast, text: "..." }
+#   sound:    { type: sound, sound: ENTITY_PLAYER_LEVELUP, volume: 1, pitch: 1 }
+#   random-pool: { type: random-pool, picks: 1, unique: true, pool: [ { weight: 70, type: ..., ... } ] }
+# Any reward can have:
+#   chance: 0-100         roll to give it
+#   permission: node      only given if player has it
+#   display-name: "..."   line shown in the menu lore (auto-generated if missing)
+#   display: false        hide from menu preview (surprise)
+#   multiply: false       ignore rank multipliers
+# Per day options:
+#   milestone: true       uses the milestone menu templates
+#   icon: { ... }         override the day's menu item in every state (item format)
+#   broadcast: "..."      broadcast when claimed
+
+days:
+  1:
+    rewards:
+      - type: money
+        amount: 250
+      - type: item
+        item:
+          material: COOKED_BEEF
+          amount: 10
+  2:
+    rewards:
+      - type: money
+        amount: 250
+      - type: item
+        item:
+          material: COOKED_BEEF
+          amount: 12
+  3:
+    rewards:
+      - type: money
+        amount: 250
+      - type: item
+        item:
+          material: COOKED_BEEF
+          amount: 14
+      - type: voucher
+        id: common_key
+  4:
+    rewards:
+      - type: money
+        amount: 250
+      - type: item
+        item:
+          material: COOKED_BEEF
+          amount: 16
+  5:
+    rewards:
+      - type: money
+        amount: 250
+      - type: item
+        item:
+          material: COOKED_BEEF
+          amount: 18
+  6:
+    rewards:
+      - type: money
+        amount: 250
+      - type: item
+        item:
+          material: COOKED_BEEF
+          amount: 20
+      - type: voucher
+        id: common_key
+  7:
+    milestone: true
+    rewards:
+      - type: money
+        amount: 1000
+      - type: voucher
+        id: rare_key
+      - type: item
+        chance: 25
+        item:
+          material: DIAMOND
+          amount: 3
+          name: "<aqua>Lucky Diamonds"
+      - type: random-pool
+        picks: 1
+        display-name: "<light_purple>Mystery XP"
+        pool:
+          - { weight: 70, type: xp, levels: 5 }
+          - { weight: 30, type: xp, levels: 15 }
+    broadcast: "<yellow>%player% <gold>reached a 7 day streak!"
+  8:
+    rewards:
+      - type: money
+        amount: 500
+      - type: item
+        item:
+          material: IRON_INGOT
+          amount: 16
+  9:
+    rewards:
+      - type: money
+        amount: 500
+      - type: item
+        item:
+          material: IRON_INGOT
+          amount: 16
+      - type: voucher
+        id: common_key
+  10:
+    rewards:
+      - type: money
+        amount: 500
+      - type: item
+        item:
+          material: IRON_INGOT
+          amount: 16
+  11:
+    rewards:
+      - type: money
+        amount: 500
+      - type: item
+        item:
+          material: IRON_INGOT
+          amount: 16
+  12:
+    rewards:
+      - type: money
+        amount: 500
+      - type: item
+        item:
+          material: IRON_INGOT
+          amount: 16
+      - type: voucher
+        id: common_key
+  13:
+    rewards:
+      - type: money
+        amount: 500
+      - type: item
+        item:
+          material: IRON_INGOT
+          amount: 16
+  14:
+    milestone: true
+    rewards:
+      - type: money
+        amount: 2000
+      - type: voucher
+        id: epic_crate
+    broadcast: "<yellow>%player% <gold>reached a 14 day streak!"
+  15:
+    rewards:
+      - type: money
+        amount: 750
+      - type: item
+        item:
+          material: EXPERIENCE_BOTTLE
+          amount: 16
+      - type: voucher
+        id: common_key
+  16:
+    rewards:
+      - type: money
+        amount: 750
+      - type: item
+        item:
+          material: EXPERIENCE_BOTTLE
+          amount: 16
+  17:
+    rewards:
+      - type: money
+        amount: 750
+      - type: item
+        item:
+          material: EXPERIENCE_BOTTLE
+          amount: 16
+  18:
+    rewards:
+      - type: money
+        amount: 750
+      - type: item
+        item:
+          material: EXPERIENCE_BOTTLE
+          amount: 16
+      - type: voucher
+        id: common_key
+  19:
+    rewards:
+      - type: money
+        amount: 750
+      - type: item
+        item:
+          material: EXPERIENCE_BOTTLE
+          amount: 16
+  20:
+    rewards:
+      - type: money
+        amount: 750
+      - type: item
+        item:
+          material: EXPERIENCE_BOTTLE
+          amount: 16
+  21:
+    milestone: true
+    rewards:
+      - type: money
+        amount: 3000
+      - type: voucher
+        id: vip_3d
+    broadcast: "<yellow>%player% <gold>reached a 21 day streak!"
+  22:
+    rewards:
+      - type: money
+        amount: 1000
+      - type: xp
+        levels: 10
+  23:
+    rewards:
+      - type: money
+        amount: 1000
+      - type: xp
+        levels: 10
+  24:
+    rewards:
+      - type: money
+        amount: 1000
+      - type: xp
+        levels: 10
+      - type: voucher
+        id: common_key
+  25:
+    rewards:
+      - type: money
+        amount: 1000
+      - type: xp
+        levels: 10
+  26:
+    rewards:
+      - type: money
+        amount: 1000
+      - type: xp
+        levels: 10
+  27:
+    rewards:
+      - type: money
+        amount: 1000
+      - type: xp
+        levels: 10
+      - type: voucher
+        id: common_key
+  28:
+    rewards:
+      - type: money
+        amount: 1000
+      - type: xp
+        levels: 10
+  29:
+    rewards:
+      - type: money
+        amount: 1000
+      - type: xp
+        levels: 10
+  30:
+    milestone: true
+    rewards:
+      - type: money
+        amount: 10000
+      - type: voucher
+        id: legendary_key
+        amount: 2
+      - type: command
+        as: console
+        command: "lp user %player% permission set cdr.tag.dedicated true"
+        display-name: "<gold>Dedicated tag"
+    broadcast: "<gradient:#FFD700:#FF4500><b>%player% completed all 30 daily rewards!</b></gradient>"

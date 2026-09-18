@@ -1,0 +1,36 @@
+name: CDailyRewards
+version: '1.0.0'
+main: carnage.cDailyRewards.CDailyRewards
+api-version: '1.21'
+softdepend: [Vault, PlaceholderAPI]
+
+commands:
+  daily:
+    description: Open the daily rewards menu
+    usage: /daily [claim|preview]
+    aliases: [dailyrewards, dr]
+  cdr:
+    description: CDailyRewards admin command
+    usage: /cdr <reload|reset|setday|skipcooldown|give|voucher|info>
+
+permissions:
+  cdr.use:
+    default: true
+  cdr.claim:
+    default: true
+  cdr.preview:
+    default: true
+  cdr.bypass.cooldown:
+    default: false
+  cdr.bypass.playtime:
+    default: false
+  cdr.admin:
+    default: op
+    children:
+      cdr.admin.reload: true
+      cdr.admin.reset: true
+      cdr.admin.setday: true
+      cdr.admin.cooldown: true
+      cdr.admin.give: true
+      cdr.admin.voucher: true
+      cdr.admin.info: true

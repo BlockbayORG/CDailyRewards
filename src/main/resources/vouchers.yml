@@ -1,0 +1,55 @@
+# Vouchers: right-click to redeem. Each given voucher gets a unique id, so duplicated copies are refused.
+# actions: [console] cmd | [player] cmd | [message] text | [broadcast] text | [sound] SOUND vol pitch
+# permission: optional node needed to redeem
+# Placeholders: %player% %uuid%
+
+common_key:
+  item:
+    material: TRIPWIRE_HOOK
+    name: "<green>Common Key Voucher"
+    lore: ["<gray>Right-click to redeem."]
+  actions:
+    - "[console] crates key give %player% common 1"
+    - "[message] <green>You got a common key!"
+    - "[sound] ENTITY_PLAYER_LEVELUP 1 1.5"
+
+rare_key:
+  item:
+    material: TRIPWIRE_HOOK
+    name: "<blue>Rare Key Voucher"
+    lore: ["<gray>Right-click to redeem."]
+    glow: true
+  actions:
+    - "[console] crates key give %player% rare 1"
+    - "[message] <blue>You got a rare key!"
+    - "[sound] ENTITY_PLAYER_LEVELUP 1 1"
+
+epic_crate:
+  item:
+    material: ENDER_CHEST
+    name: "<light_purple>Epic Crate Voucher"
+    lore: ["<gray>Right-click to redeem."]
+    glow: true
+  actions:
+    - "[console] crates key give %player% epic 1"
+    - "[message] <light_purple>You got an epic key!"
+
+vip_3d:
+  item:
+    material: NAME_TAG
+    name: "<aqua>VIP (3 days) Voucher"
+    lore: ["<gray>Right-click to redeem."]
+    glow: true
+  actions:
+    - "[console] lp user %player% parent addtemp vip 3d"
+    - "[broadcast] <aqua>%player% redeemed 3 days of VIP!"
+
+legendary_key:
+  item:
+    material: NETHER_STAR
+    name: "<gold><b>Legendary Key Voucher"
+    lore: ["<gray>Right-click to redeem."]
+  actions:
+    - "[console] crates key give %player% legendary 1"
+    - "[message] <gold>You got a legendary key!"
+    - "[sound] UI_TOAST_CHALLENGE_COMPLETE 1 1"

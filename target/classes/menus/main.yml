@@ -1,0 +1,83 @@
+# Main daily rewards menu.
+# layout: one string per row (9 chars). 'D' = day slot (filled in order; pages when there are more days than D slots).
+# Other chars map to items below. ' ' = empty.
+# Item actions (on click): [close] | [page] next|prev | [player] cmd | [console] cmd | [message] text | [sound] SOUND vol pitch
+# Placeholders: %player% %cdr_day% %cdr_streak% %cdr_total% %time_left% %page% %pages% + PlaceholderAPI
+title: "<dark_gray>Daily Rewards <gray>(%page%/%pages%)"
+update-interval: 20
+open-sound: BLOCK_CHEST_OPEN
+
+layout:
+  - "#########"
+  - "#DDDDDDD#"
+  - "#DDDDDDD#"
+  - "#DDDDDDD#"
+  - "#DDDDDDD#"
+  - "#<##I##>X"
+
+items:
+  "#":
+    material: BLACK_STAINED_GLASS_PANE
+    name: " "
+  "<":
+    material: ARROW
+    name: "<white>Previous page"
+    actions: ["[page] prev"]
+  ">":
+    material: ARROW
+    name: "<white>Next page"
+    actions: ["[page] next"]
+  "X":
+    material: BARRIER
+    name: "<red>Close"
+    actions: ["[close]"]
+  "I":
+    material: PLAYER_HEAD
+    skull: "%player%"
+    name: "<gold>%player%"
+    lore:
+      - "<gray>Current day: <white>%cdr_day%"
+      - "<gray>Streak: <white>%cdr_streak%"
+      - "<gray>Total claims: <white>%cdr_total%"
+      - ""
+      - "<gray>Next reward: <yellow>%time_left%"
+
+# Day item per state. Placeholders: %day% %rewards_lore% (expands to one line per reward) %time_left%
+day-states:
+  available:
+    material: CHEST_MINECART
+    glow: true
+    name: "<green><b>Day %day%</b> <gray>- <green>Click to claim!"
+    lore: ["<gray>Rewards:", "%rewards_lore%"]
+  claimed:
+    material: MINECART
+    name: "<dark_gray>Day %day% - Claimed"
+    lore: ["%rewards_lore%"]
+  cooldown:
+    material: CLOCK
+    name: "<yellow>Day %day%"
+    lore: ["<gray>Rewards:", "%rewards_lore%", "", "<gray>Available in <yellow>%time_left%"]
+  locked:
+    material: CHEST
+    name: "<red>Day %day%"
+    lore: ["<gray>Rewards:", "%rewards_lore%"]
+
+# Used instead for days with milestone: true
+milestone-states:
+  available:
+    material: ENDER_CHEST
+    glow: true
+    name: "<gold><b>Day %day% - MILESTONE</b> <green>Click to claim!"
+    lore: ["<gray>Rewards:", "%rewards_lore%"]
+  claimed:
+    material: MINECART
+    name: "<dark_gray>Day %day% - Claimed"
+    lore: ["%rewards_lore%"]
+  cooldown:
+    material: ENDER_CHEST
+    name: "<gold><b>Day %day% - MILESTONE"
+    lore: ["<gray>Rewards:", "%rewards_lore%", "", "<gray>Available in <yellow>%time_left%"]
+  locked:
+    material: ENDER_CHEST
+    name: "<gold><b>Day %day% - MILESTONE"
+    lore: ["<gray>Rewards:", "%rewards_lore%"]
