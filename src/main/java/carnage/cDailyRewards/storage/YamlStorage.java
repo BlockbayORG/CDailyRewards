@@ -18,7 +18,8 @@ public final class YamlStorage implements Storage {
     public PlayerData load(UUID uuid) {
         PlayerData data = new PlayerData(uuid);
         File file = new File(folder, uuid + ".yml");
-        if (!file.exists()) return data;
+        if (!file.exists())
+            return data;
         YamlConfiguration yml = YamlConfiguration.loadConfiguration(file);
         data.day(Math.max(1, yml.getInt("day", 1)));
         data.streak(yml.getInt("streak"));

@@ -21,9 +21,11 @@ public final class Actions {
     public static void run(Player player, List<String> actions, UnaryOperator<String> vars, Consumer<String[]> custom) {
         for (String raw : actions) {
             String line = vars.apply(raw).trim();
-            if (!line.startsWith("[")) continue;
+            if (!line.startsWith("["))
+                continue;
             int end = line.indexOf(']');
-            if (end < 0) continue;
+            if (end < 0)
+                continue;
             String type = line.substring(1, end).toLowerCase(Locale.ROOT);
             String arg = line.substring(end + 1).trim();
             switch (type) {
@@ -38,7 +40,8 @@ public final class Actions {
                     RewardTypes.playSound(player, p[0], vol, pitch);
                 }
                 default -> {
-                    if (custom != null) custom.accept(new String[]{type, arg});
+                    if (custom != null)
+                        custom.accept(new String[]{type, arg});
                 }
             }
         }

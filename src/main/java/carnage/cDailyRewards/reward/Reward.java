@@ -5,7 +5,8 @@ import org.bukkit.configuration.ConfigurationSection;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * One reward entry of a day. Subclasses do the actual giving; this class handles the shared options.
+ * One reward entry of a day. Subclasses do the actual giving; this class
+ * handles the shared options.
  */
 public abstract class Reward {
 
@@ -25,8 +26,10 @@ public abstract class Reward {
 
     /** Rolls chance and permission, then gives. */
     public final void tryGive(RewardContext ctx) {
-        if (permission != null && !permission.isEmpty() && !ctx.player().hasPermission(permission)) return;
-        if (chance < 100 && ThreadLocalRandom.current().nextDouble(100) >= chance) return;
+        if (permission != null && !permission.isEmpty() && !ctx.player().hasPermission(permission))
+            return;
+        if (chance < 100 && ThreadLocalRandom.current().nextDouble(100) >= chance)
+            return;
         give(ctx);
     }
 
@@ -37,10 +40,13 @@ public abstract class Reward {
 
     /** Menu lore line, or null when hidden. */
     public String displayLine() {
-        if (!display) return null;
+        if (!display)
+            return null;
         String line = displayName != null ? displayName : defaultDisplay();
-        if (line == null) return null;
-        if (chance < 100) line += " <dark_gray>(" + trim(chance) + "%)";
+        if (line == null)
+            return null;
+        if (chance < 100)
+            line += " <dark_gray>(" + trim(chance) + "%)";
         return "<dark_gray>• </dark_gray>" + line;
     }
 

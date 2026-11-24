@@ -2,7 +2,10 @@ package carnage.cDailyRewards.storage;
 
 import java.util.UUID;
 
-/** Blocking storage. Always called from the plugin's storage thread, never the main thread. */
+/**
+ * Blocking storage. Always called from the plugin's storage thread, never the
+ * main thread.
+ */
 public interface Storage {
 
     PlayerData load(UUID uuid) throws Exception;

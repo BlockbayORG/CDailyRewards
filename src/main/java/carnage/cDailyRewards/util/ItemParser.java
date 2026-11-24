@@ -19,7 +19,8 @@ import java.util.function.UnaryOperator;
 import java.util.logging.Logger;
 
 /**
- * Item template read from config. Built per player so names/lore can hold placeholders.
+ * Item template read from config. Built per player so names/lore can hold
+ * placeholders.
  */
 public final class ItemParser {
 
@@ -91,31 +92,43 @@ public final class ItemParser {
     }
 
     /**
-     * @param vars       applied to name and lore lines before parsing
-     * @param loreExpand lines equal to a key are replaced by a list (e.g. %rewards_lore%); may be null
+     * @param vars
+     *            applied to name and lore lines before parsing
+     * @param loreExpand
+     *            lines equal to a key are replaced by a list (e.g. %rewards_lore%);
+     *            may be null
      */
-    public ItemStack build(Player player, int amount, UnaryOperator<String> vars, java.util.Map<String, List<String>> loreExpand) {
+    public ItemStack build(Player player, int amount, UnaryOperator<String> vars,
+            java.util.Map<String, List<String>> loreExpand) {
         ItemStack item = new ItemStack(material, Math.min(amount, material.getMaxStackSize() * 64));
         ItemMeta meta = item.getItemMeta();
-        if (meta == null) return item;
-        if (name != null) meta.displayName(Text.item(vars.apply(name), player));
+        if (meta == null)
+            return item;
+        if (name != null)
+            meta.displayName(Text.item(vars.apply(name), player));
         if (!lore.isEmpty()) {
             List<net.kyori.adventure.text.Component> out = new ArrayList<>();
             for (String line : lore) {
                 List<String> expanded = loreExpand == null ? null : loreExpand.get(line.trim());
                 if (expanded != null) {
-                    for (String e : expanded) out.add(Text.item(vars.apply(e), player));
+                    for (String e : expanded)
+                        out.add(Text.item(vars.apply(e), player));
                 } else {
                     out.add(Text.item(vars.apply(line), player));
                 }
             }
             meta.lore(out);
         }
-        for (Object[] e : enchants) meta.addEnchant((Enchantment) e[0], (Integer) e[1], true);
-        if (!flags.isEmpty()) meta.addItemFlags(flags.toArray(new ItemFlag[0]));
-        if (customModelData != 0) meta.setCustomModelData(customModelData);
-        if (glow != null) meta.setEnchantmentGlintOverride(glow);
-        if (unbreakable) meta.setUnbreakable(true);
+        for (Object[] e : enchants)
+            meta.addEnchant((Enchantment) e[0], (Integer) e[1], true);
+        if (!flags.isEmpty())
+            meta.addItemFlags(flags.toArray(new ItemFlag[0]));
+        if (customModelData != 0)
+            meta.setCustomModelData(customModelData);
+        if (glow != null)
+            meta.setEnchantmentGlintOverride(glow);
+        if (unbreakable)
+            meta.setUnbreakable(true);
         if (skull != null && meta instanceof SkullMeta skullMeta) {
             skullMeta.setOwningPlayer(Bukkit.getOfflinePlayer(vars.apply(skull)));
         }

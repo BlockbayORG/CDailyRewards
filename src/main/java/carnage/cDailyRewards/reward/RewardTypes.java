@@ -51,7 +51,8 @@ public final class RewardTypes {
             MemoryConfiguration mc = new MemoryConfiguration();
             ConfigurationSection sec = mc.createSection(path + "[" + i++ + "]", map);
             Reward r = parse(sec, log);
-            if (r != null) out.add(r);
+            if (r != null)
+                out.add(r);
         }
         return out;
     }
@@ -69,12 +70,16 @@ public final class RewardTypes {
         @Override
         protected void give(RewardContext ctx) {
             String cmd = ctx.apply(command);
-            if (cmd.startsWith("/")) cmd = cmd.substring(1);
+            if (cmd.startsWith("/"))
+                cmd = cmd.substring(1);
             try {
-                if (as.equals("player")) ctx.player().performCommand(cmd);
-                else Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd);
+                if (as.equals("player"))
+                    ctx.player().performCommand(cmd);
+                else
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd);
             } catch (Exception e) {
-                ctx.plugin().getLogger().warning("Reward command failed for " + ctx.player().getName() + ": " + cmd + " (" + e.getMessage() + ")");
+                ctx.plugin().getLogger().warning("Reward command failed for " + ctx.player().getName() + ": " + cmd
+                        + " (" + e.getMessage() + ")");
             }
         }
 
@@ -101,8 +106,7 @@ public final class RewardTypes {
 
         @Override
         protected String defaultDisplay() {
-            String name = item.name() != null ? item.name()
-                    : "<lang:" + item.material().getItemTranslationKey() + ">";
+            String name = item.name() != null ? item.name() : "<lang:" + item.material().getItemTranslationKey() + ">";
             return "<white>" + item.amount() + "x </white>" + name;
         }
     }
@@ -125,7 +129,8 @@ public final class RewardTypes {
                 return;
             }
             int n = scale(amount, ctx);
-            for (int i = 0; i < n; i++) ctx.giveItem(ctx.plugin().vouchers().create(voucher, ctx.player()));
+            for (int i = 0; i < n; i++)
+                ctx.giveItem(ctx.plugin().vouchers().create(voucher, ctx.player()));
         }
 
         @Override
@@ -191,8 +196,10 @@ public final class RewardTypes {
 
         @Override
         protected void give(RewardContext ctx) {
-            if (levels > 0) ctx.player().giveExpLevels(scale(levels, ctx));
-            if (points > 0) ctx.player().giveExp(scale(points, ctx));
+            if (levels > 0)
+                ctx.player().giveExpLevels(scale(levels, ctx));
+            if (points > 0)
+                ctx.player().giveExp(scale(points, ctx));
         }
 
         @Override
@@ -214,8 +221,10 @@ public final class RewardTypes {
         @Override
         protected void give(RewardContext ctx) {
             var msg = Text.parse(ctx.apply(text), ctx.player());
-            if (broadcast) Bukkit.broadcast(msg);
-            else ctx.player().sendMessage(msg);
+            if (broadcast)
+                Bukkit.broadcast(msg);
+            else
+                ctx.player().sendMessage(msg);
         }
 
         @Override
@@ -262,7 +271,8 @@ public final class RewardTypes {
                 MemoryConfiguration mc = new MemoryConfiguration();
                 ConfigurationSection s = mc.createSection(sec.getCurrentPath() + ".pool[" + i++ + "]", map);
                 Reward r = parse(s, log);
-                if (r == null) continue;
+                if (r == null)
+                    continue;
                 pool.add(r);
                 weights.add(Math.max(0, s.getDouble("weight", 1)));
             }
@@ -274,10 +284,12 @@ public final class RewardTypes {
             List<Double> w = new ArrayList<>(weights);
             for (int p = 0; p < picks && !options.isEmpty(); p++) {
                 double total = w.stream().mapToDouble(Double::doubleValue).sum();
-                if (total <= 0) return;
+                if (total <= 0)
+                    return;
                 double roll = ThreadLocalRandom.current().nextDouble(total);
                 int idx = 0;
-                while (idx < w.size() - 1 && (roll -= w.get(idx)) >= 0) idx++;
+                while (idx < w.size() - 1 && (roll -= w.get(idx)) >= 0)
+                    idx++;
                 options.get(idx).tryGive(ctx);
                 if (unique) {
                     options.remove(idx);
@@ -292,12 +304,17 @@ public final class RewardTypes {
         }
     }
 
-    /** Plays a sound by Bukkit field name (ENTITY_PLAYER_LEVELUP) or key (entity.player.levelup). */
+    /**
+     * Plays a sound by Bukkit field name (ENTITY_PLAYER_LEVELUP) or key
+     * (entity.player.levelup).
+     */
     public static void playSound(org.bukkit.entity.Player player, String name, float volume, float pitch) {
-        if (name == null || name.isEmpty()) return;
+        if (name == null || name.isEmpty())
+            return;
         try {
             if (name.contains(".") || name.contains(":")) {
-                player.playSound(Sound.sound(Key.key(name.toLowerCase(Locale.ROOT)), Sound.Source.MASTER, volume, pitch));
+                player.playSound(
+                        Sound.sound(Key.key(name.toLowerCase(Locale.ROOT)), Sound.Source.MASTER, volume, pitch));
                 return;
             }
             Object field = org.bukkit.Sound.class.getField(name.toUpperCase(Locale.ROOT)).get(null);

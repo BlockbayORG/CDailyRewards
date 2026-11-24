@@ -24,7 +24,8 @@ public final class Text {
     }
 
     public static String replace(String s, Map<String, String> vars) {
-        if (s == null) return "";
+        if (s == null)
+            return "";
         for (Map.Entry<String, String> e : vars.entrySet()) {
             s = s.replace(e.getKey(), e.getValue());
         }
@@ -38,9 +39,13 @@ public final class Text {
         return s;
     }
 
-    /** Parses MiniMessage, or legacy & codes when the string has no MiniMessage tags. */
+    /**
+     * Parses MiniMessage, or legacy & codes when the string has no MiniMessage
+     * tags.
+     */
     public static Component parse(String s) {
-        if (s == null || s.isEmpty()) return Component.empty();
+        if (s == null || s.isEmpty())
+            return Component.empty();
         if ((s.indexOf('&') >= 0 || s.indexOf('§') >= 0) && s.indexOf('<') < 0) {
             return LegacyComponentSerializer.legacyAmpersand().deserialize(s.replace('§', '&'));
         }
@@ -57,14 +62,19 @@ public final class Text {
     }
 
     public static String formatDuration(long millis) {
-        if (millis <= 0) return "now";
+        if (millis <= 0)
+            return "now";
         long secs = millis / 1000;
         long d = secs / 86400, h = (secs % 86400) / 3600, m = (secs % 3600) / 60, s = secs % 60;
         StringBuilder sb = new StringBuilder();
-        if (d > 0) sb.append(d).append("d ");
-        if (h > 0 || d > 0) sb.append(h).append("h ");
-        if (m > 0 || h > 0 || d > 0) sb.append(m).append("m ");
-        if (d == 0) sb.append(s).append('s');
+        if (d > 0)
+            sb.append(d).append("d ");
+        if (h > 0 || d > 0)
+            sb.append(h).append("h ");
+        if (m > 0 || h > 0 || d > 0)
+            sb.append(m).append("m ");
+        if (d == 0)
+            sb.append(s).append('s');
         return sb.toString().trim();
     }
 }

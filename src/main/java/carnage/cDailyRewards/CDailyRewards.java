@@ -43,7 +43,8 @@ public final class CDailyRewards extends JavaPlugin implements Listener {
     public void onEnable() {
         saveDefaultConfig();
         for (String res : new String[]{"messages.yml", "rewards.yml", "vouchers.yml", "menus/main.yml"}) {
-            if (!new File(getDataFolder(), res).exists()) saveResource(res, false);
+            if (!new File(getDataFolder(), res).exists())
+                saveResource(res, false);
         }
         Text.init();
 
@@ -54,7 +55,9 @@ public final class CDailyRewards extends JavaPlugin implements Listener {
 
         Storage storage;
         try {
-            storage = settings.storage.equals("SQLITE") ? new SqliteStorage(getDataFolder()) : new YamlStorage(getDataFolder());
+            storage = settings.storage.equals("SQLITE")
+                    ? new SqliteStorage(getDataFolder())
+                    : new YamlStorage(getDataFolder());
         } catch (Exception e) {
             getLogger().severe("Could not open SQLite storage, falling back to YAML: " + e.getMessage());
             storage = new YamlStorage(getDataFolder());
@@ -63,7 +66,8 @@ public final class CDailyRewards extends JavaPlugin implements Listener {
         data.loadOnline();
 
         hookVault();
-        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) new CdrExpansion(this).register();
+        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI"))
+            new CdrExpansion(this).register();
 
         var pm = Bukkit.getPluginManager();
         pm.registerEvents(data, this);
@@ -87,7 +91,8 @@ public final class CDailyRewards extends JavaPlugin implements Listener {
             menuListener.stopRefresh();
             menuListener.closeAll();
         }
-        if (data != null) data.shutdown();
+        if (data != null)
+            data.shutdown();
     }
 
     private void loadConfigs() {
@@ -116,18 +121,23 @@ public final class CDailyRewards extends JavaPlugin implements Listener {
             return;
         }
         RegisteredServiceProvider<Economy> rsp = Bukkit.getServicesManager().getRegistration(Economy.class);
-        if (rsp != null) economy = rsp.getProvider();
-        else getLogger().info("No Vault economy provider, money rewards disabled");
+        if (rsp != null)
+            economy = rsp.getProvider();
+        else
+            getLogger().info("No Vault economy provider, money rewards disabled");
     }
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
-        if (!settings.joinNotify) return;
+        if (!settings.joinNotify)
+            return;
         Player player = event.getPlayer();
         Bukkit.getScheduler().runTaskLater(this, () -> {
-            if (!player.isOnline()) return;
+            if (!player.isOnline())
+                return;
             PlayerData d = data.get(player.getUniqueId());
-            if (d == null) return;
+            if (d == null)
+                return;
             claims.checkMissed(player, d);
             if (claims.state(d) == ClaimService.State.AVAILABLE && player.hasPermission("cdr.use")) {
                 messages.send(player, "join-ready", Map.of("%day%", String.valueOf(d.day())));
@@ -140,15 +150,32 @@ public final class CDailyRewards extends JavaPlugin implements Listener {
         data.runIo(task);
     }
 
-    public Settings settings() { return settings; }
-    public Messages messages() { return messages; }
-    public MenuConfig menuConfig() { return menuConfig; }
-    public RewardRegistry rewards() { return rewards; }
-    public VoucherManager vouchers() { return vouchers; }
-    public DataManager data() { return data; }
-    public ClaimService claims() { return claims; }
+    public Settings settings() {
+        return settings;
+    }
+    public Messages messages() {
+        return messages;
+    }
+    public MenuConfig menuConfig() {
+        return menuConfig;
+    }
+    public RewardRegistry rewards() {
+        return rewards;
+    }
+    public VoucherManager vouchers() {
+        return vouchers;
+    }
+    public DataManager data() {
+        return data;
+    }
+    public ClaimService claims() {
+        return claims;
+    }
 
-    /** Vault economy, or null. Typed as Economy only here so the class loads without Vault. */
+    /**
+     * Vault economy, or null. Typed as Economy only here so the class loads without
+     * Vault.
+     */
     public Economy economy() {
         return (Economy) economy;
     }

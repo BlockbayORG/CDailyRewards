@@ -54,7 +54,8 @@ public final class VoucherManager implements Listener {
         vouchers.clear();
         for (String id : cfg.getKeys(false)) {
             ConfigurationSection sec = cfg.getConfigurationSection(id);
-            if (sec == null) continue;
+            if (sec == null)
+                continue;
             ItemParser item = ItemParser.of(sec.getConfigurationSection("item"), plugin.getLogger());
             if (item == null) {
                 plugin.getLogger().warning("vouchers.yml: '" + id + "' has no item section");
@@ -90,13 +91,17 @@ public final class VoucherManager implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onUse(PlayerInteractEvent event) {
-        if (event.getHand() != EquipmentSlot.HAND) return;
-        if (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+        if (event.getHand() != EquipmentSlot.HAND)
+            return;
+        if (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK)
+            return;
         ItemStack item = event.getItem();
-        if (item == null || !item.hasItemMeta()) return;
+        if (item == null || !item.hasItemMeta())
+            return;
         PersistentDataContainer pdc = item.getItemMeta().getPersistentDataContainer();
         String id = pdc.get(idKey, PersistentDataType.STRING);
-        if (id == null) return;
+        if (id == null)
+            return;
         event.setCancelled(true);
 
         Player player = event.getPlayer();
@@ -117,21 +122,25 @@ public final class VoucherManager implements Listener {
 
         if (uid != null && !redeemed.add(uid)) {
             plugin.messages().send(player, "voucher-duplicate", Map.of());
-            plugin.getLogger().warning(player.getName() + " tried to redeem a duplicated voucher '" + id + "' (" + uid + ")");
+            plugin.getLogger()
+                    .warning(player.getName() + " tried to redeem a duplicated voucher '" + id + "' (" + uid + ")");
             return;
         }
-        if (uid != null) appendRedeemed(uid);
+        if (uid != null)
+            appendRedeemed(uid);
 
-        Actions.run(player, voucher.actions(), s -> s.replace("%player%", player.getName())
-                .replace("%uuid%", player.getUniqueId().toString()), null);
+        Actions.run(player, voucher.actions(),
+                s -> s.replace("%player%", player.getName()).replace("%uuid%", player.getUniqueId().toString()), null);
         plugin.messages().send(player, "voucher-redeemed", Map.of());
     }
 
     private void loadRedeemed() {
-        if (!redeemedFile.exists()) return;
+        if (!redeemedFile.exists())
+            return;
         try {
             for (String line : Files.readAllLines(redeemedFile.toPath(), StandardCharsets.UTF_8)) {
-                if (!line.isBlank()) redeemed.add(line.trim());
+                if (!line.isBlank())
+                    redeemed.add(line.trim());
             }
         } catch (IOException e) {
             plugin.getLogger().warning("Could not read redeemed-vouchers.txt: " + e.getMessage());

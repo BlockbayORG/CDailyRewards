@@ -29,13 +29,15 @@ public final class RewardRegistry {
                 continue;
             }
             ConfigurationSection sec = root.getConfigurationSection(key);
-            if (sec == null) continue;
+            if (sec == null)
+                continue;
             List<Reward> rewards = RewardTypes.parseList(sec.getMapList("rewards"), "days." + key + ".rewards", log);
             days.put(day, new RewardDay(day, sec.getBoolean("milestone", false), rewards,
                     ItemParser.of(sec.getConfigurationSection("icon"), log), sec.getString("broadcast")));
         }
         for (int d = 1; d <= totalDays; d++) {
-            if (!days.containsKey(d)) log.warning("rewards.yml: day " + d + " has no rewards");
+            if (!days.containsKey(d))
+                log.warning("rewards.yml: day " + d + " has no rewards");
         }
     }
 

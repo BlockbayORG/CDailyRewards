@@ -12,11 +12,17 @@ import java.util.logging.Logger;
 
 public final class Settings {
 
-    public enum CooldownMode { ROLLING_24H, FIXED_RESET }
+    public enum CooldownMode {
+        ROLLING_24H, FIXED_RESET
+    }
 
-    public enum OnMiss { RESET, KEEP, PAUSE, GO_BACK_N }
+    public enum OnMiss {
+        RESET, KEEP, PAUSE, GO_BACK_N
+    }
 
-    public enum AfterLastDay { RESTART, LOOP_LAST, STOP }
+    public enum AfterLastDay {
+        RESTART, LOOP_LAST, STOP
+    }
 
     public final String storage;
     public final int days;
@@ -68,14 +74,17 @@ public final class Settings {
         this.joinNotifySound = c.getString("join-notify.sound", "");
         this.dropWhenFull = !"DENY".equalsIgnoreCase(c.getString("full-inventory", "DROP"));
         ConfigurationSection m = c.getConfigurationSection("multipliers");
-        if (m != null) for (String k : m.getKeys(false)) multipliers.put(k, m.getDouble(k, 1));
+        if (m != null)
+            for (String k : m.getKeys(false))
+                multipliers.put(k, m.getDouble(k, 1));
         this.claimSound = c.getString("claim-effects.sound", "");
         this.claimParticle = c.getString("claim-effects.particle", "");
         this.claimParticleCount = c.getInt("claim-effects.particle-count", 30);
     }
 
     private static <E extends Enum<E>> E parse(Class<E> type, String value, E def, Logger log) {
-        if (value == null) return def;
+        if (value == null)
+            return def;
         try {
             return Enum.valueOf(type, value.toUpperCase(Locale.ROOT));
         } catch (IllegalArgumentException e) {

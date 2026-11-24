@@ -26,7 +26,9 @@ import java.util.logging.Level;
  */
 public final class ClaimService {
 
-    public enum State { AVAILABLE, COOLDOWN, FINISHED }
+    public enum State {
+        AVAILABLE, COOLDOWN, FINISHED
+    }
 
     private static final long DAY_MS = 86_400_000L;
 
@@ -45,17 +47,20 @@ public final class ClaimService {
 
     /** Index of the reset period a moment falls in (FIXED_RESET mode). */
     private long period(long millis) {
-        ZonedDateTime z = Instant.ofEpochMilli(millis).atZone(s().zone)
-                .minusHours(s().resetTime.getHour()).minusMinutes(s().resetTime.getMinute());
+        ZonedDateTime z = Instant.ofEpochMilli(millis).atZone(s().zone).minusHours(s().resetTime.getHour())
+                .minusMinutes(s().resetTime.getMinute());
         return z.toLocalDate().toEpochDay();
     }
 
     /** Epoch millis when the player can claim next. */
     public long nextClaimAt(PlayerData d) {
-        if (d.lastClaim() == 0 || d.cooldownSkipped()) return 0;
-        if (s().cooldownMode == CooldownMode.ROLLING_24H) return d.lastClaim() + DAY_MS;
+        if (d.lastClaim() == 0 || d.cooldownSkipped())
+            return 0;
+        if (s().cooldownMode == CooldownMode.ROLLING_24H)
+            return d.lastClaim() + DAY_MS;
         long nextPeriod = period(d.lastClaim()) + 1;
-        return java.time.LocalDate.ofEpochDay(nextPeriod).atTime(s().resetTime).atZone(s().zone).toInstant().toEpochMilli();
+        return java.time.LocalDate.ofEpochDay(nextPeriod).atTime(s().resetTime).atZone(s().zone).toInstant()
+                .toEpochMilli();
     }
 
     public long timeLeft(PlayerData d) {
@@ -63,12 +68,14 @@ public final class ClaimService {
     }
 
     public State state(PlayerData d) {
-        if (d.finished()) return State.FINISHED;
+        if (d.finished())
+            return State.FINISHED;
         return System.currentTimeMillis() >= nextClaimAt(d) ? State.AVAILABLE : State.COOLDOWN;
     }
 
     private boolean missed(PlayerData d, long now) {
-        if (d.lastClaim() == 0 || d.finished() || d.cooldownSkipped()) return false;
+        if (d.lastClaim() == 0 || d.finished() || d.cooldownSkipped())
+            return false;
         if (s().cooldownMode == CooldownMode.ROLLING_24H) {
             return now - d.lastClaim() > 2 * DAY_MS + s().graceMillis;
         }
@@ -76,12 +83,14 @@ public final class ClaimService {
     }
 
     /**
-     * Applies on-miss rules when the player skipped a whole day. Call before showing or claiming.
+     * Applies on-miss rules when the player skipped a whole day. Call before
+     * showing or claiming.
      *
      * @return true if progress changed
      */
     public boolean checkMissed(Player player, PlayerData d) {
-        if (!missed(d, System.currentTimeMillis())) return false;
+        if (!missed(d, System.currentTimeMillis()))
+            return false;
         switch (s().onMiss) {
             case RESET -> {
                 d.day(1);
@@ -100,13 +109,15 @@ public final class ClaimService {
             case PAUSE -> d.lastClaim(0);
         }
         plugin.data().save(d);
-        if (s().onMiss != Settings.OnMiss.PAUSE) plugin.messages().send(player, "streak-lost", Map.of());
+        if (s().onMiss != Settings.OnMiss.PAUSE)
+            plugin.messages().send(player, "streak-lost", Map.of());
         return true;
     }
 
     /** Minutes of playtime still needed, 0 if none. */
     public int playtimeMissing(Player player, PlayerData d) {
-        if (s().requirePlaytime <= 0 || player.hasPermission("cdr.bypass.playtime")) return 0;
+        if (s().requirePlaytime <= 0 || player.hasPermission("cdr.bypass.playtime"))
+            return 0;
         long played = player.getStatistic(Statistic.PLAY_ONE_MINUTE) - d.playtimeAtClaim();
         long needed = s().requirePlaytime * 1200L - played;
         return needed <= 0 ? 0 : (int) Math.ceil(needed / 1200.0);
@@ -115,7 +126,8 @@ public final class ClaimService {
     public double multiplier(Player player) {
         double best = 1;
         for (Map.Entry<String, Double> e : s().multipliers.entrySet()) {
-            if (player.hasPermission("cdr.multiplier." + e.getKey())) best = Math.max(best, e.getValue());
+            if (player.hasPermission("cdr.multiplier." + e.getKey()))
+                best = Math.max(best, e.getValue());
         }
         return best;
     }
@@ -124,7 +136,8 @@ public final class ClaimService {
 
     public void claim(Player player) {
         PlayerData d = plugin.data().get(player.getUniqueId());
-        if (d == null) return;
+        if (d == null)
+            return;
         checkMissed(player, d);
 
         State state = state(d);
@@ -147,7 +160,8 @@ public final class ClaimService {
         }
 
         int day = d.day();
-        // Update progress first, so an exception in a reward can't allow a second claim.
+        // Update progress first, so an exception in a reward can't allow a second
+        // claim.
         d.lastClaim(System.currentTimeMillis());
         d.cooldownSkipped(false);
         d.playtimeAtClaim(player.getStatistic(Statistic.PLAY_ONE_MINUTE));
@@ -167,11 +181,14 @@ public final class ClaimService {
         giveDay(player, day);
         RewardDay rd = plugin.rewards().get(day);
         if (rd.broadcast() != null && !rd.broadcast().isEmpty()) {
-            Bukkit.broadcast(Text.parse(rd.broadcast().replace("%player%", player.getName()).replace("%day%", String.valueOf(day)), player));
+            Bukkit.broadcast(Text.parse(
+                    rd.broadcast().replace("%player%", player.getName()).replace("%day%", String.valueOf(day)),
+                    player));
         }
         playEffects(player);
         plugin.messages().send(player, "claimed", Map.of("%day%", String.valueOf(day)));
-        if (dropped.remove(player.getUniqueId())) plugin.messages().send(player, "inventory-full-dropped", Map.of());
+        if (dropped.remove(player.getUniqueId()))
+            plugin.messages().send(player, "inventory-full-dropped", Map.of());
     }
 
     /** Gives a day's rewards without touching progress. */
@@ -195,7 +212,8 @@ public final class ClaimService {
         if (!s().claimParticle.isEmpty()) {
             try {
                 Particle particle = Particle.valueOf(s().claimParticle.toUpperCase(Locale.ROOT));
-                player.getWorld().spawnParticle(particle, player.getLocation().add(0, 1, 0), s().claimParticleCount, 0.5, 0.8, 0.5, 0.1);
+                player.getWorld().spawnParticle(particle, player.getLocation().add(0, 1, 0), s().claimParticleCount,
+                        0.5, 0.8, 0.5, 0.1);
             } catch (Exception ignored) {
                 // invalid particle or one that needs data
             }

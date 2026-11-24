@@ -20,7 +20,8 @@ import java.util.function.Consumer;
 import java.util.logging.Level;
 
 /**
- * Caches data of online players. All storage IO runs on one dedicated thread, so SQLite and file writes never race.
+ * Caches data of online players. All storage IO runs on one dedicated thread,
+ * so SQLite and file writes never race.
  */
 public final class DataManager implements Listener {
 
@@ -48,7 +49,10 @@ public final class DataManager implements Listener {
         });
     }
 
-    /** Online player's data, or null if it has not loaded (should not happen after join). */
+    /**
+     * Online player's data, or null if it has not loaded (should not happen after
+     * join).
+     */
     public PlayerData get(UUID uuid) {
         return cache.get(uuid);
     }
@@ -65,7 +69,8 @@ public final class DataManager implements Listener {
     }
 
     /**
-     * Runs {@code action} on the main thread with the player's data (online or offline), then saves it.
+     * Runs {@code action} on the main thread with the player's data (online or
+     * offline), then saves it.
      */
     public void edit(UUID uuid, Consumer<PlayerData> action) {
         PlayerData cached = cache.get(uuid);
@@ -93,7 +98,8 @@ public final class DataManager implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPreLogin(AsyncPlayerPreLoginEvent event) {
-        if (event.getLoginResult() != AsyncPlayerPreLoginEvent.Result.ALLOWED) return;
+        if (event.getLoginResult() != AsyncPlayerPreLoginEvent.Result.ALLOWED)
+            return;
         UUID uuid = event.getUniqueId();
         try {
             PlayerData data = io.submit(() -> storage.load(uuid)).get(10, TimeUnit.SECONDS);
@@ -105,7 +111,8 @@ public final class DataManager implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onJoin(PlayerJoinEvent event) {
-        // Fallback if pre-login loading failed or the player was cached out by a reload.
+        // Fallback if pre-login loading failed or the player was cached out by a
+        // reload.
         UUID uuid = event.getPlayer().getUniqueId();
         if (!cache.containsKey(uuid)) {
             cache.put(uuid, new PlayerData(uuid));
@@ -113,7 +120,8 @@ public final class DataManager implements Listener {
                 try {
                     PlayerData loaded = storage.load(uuid);
                     Bukkit.getScheduler().runTask(plugin, () -> {
-                        if (Bukkit.getPlayer(uuid) != null) cache.put(uuid, loaded);
+                        if (Bukkit.getPlayer(uuid) != null)
+                            cache.put(uuid, loaded);
                     });
                 } catch (Exception e) {
                     plugin.getLogger().log(Level.WARNING, "Could not load data for " + uuid, e);
@@ -125,7 +133,8 @@ public final class DataManager implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onQuit(PlayerQuitEvent event) {
         PlayerData data = cache.remove(event.getPlayer().getUniqueId());
-        if (data != null) save(data);
+        if (data != null)
+            save(data);
     }
 
     /** Loads data for players already online (plugin enabled mid-game). */
@@ -145,7 +154,8 @@ public final class DataManager implements Listener {
         cache.values().forEach(this::save);
         io.shutdown();
         try {
-            if (!io.awaitTermination(15, TimeUnit.SECONDS)) plugin.getLogger().warning("Storage did not finish saving in time");
+            if (!io.awaitTermination(15, TimeUnit.SECONDS))
+                plugin.getLogger().warning("Storage did not finish saving in time");
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }

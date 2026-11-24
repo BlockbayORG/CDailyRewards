@@ -9,23 +9,23 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.UUID;
 
-/** SQLite storage using the driver bundled with Paper. Single connection, used from one thread. */
+/**
+ * SQLite storage using the driver bundled with Paper. Single connection, used
+ * from one thread.
+ */
 public final class SqliteStorage implements Storage {
 
     private final Connection connection;
 
     public SqliteStorage(File dataFolder) throws SQLException {
         dataFolder.mkdirs();
-        this.connection = DriverManager.getConnection("jdbc:sqlite:" + new File(dataFolder, "data.db").getAbsolutePath());
+        this.connection = DriverManager
+                .getConnection("jdbc:sqlite:" + new File(dataFolder, "data.db").getAbsolutePath());
         try (Statement st = connection.createStatement()) {
-            st.execute("CREATE TABLE IF NOT EXISTS cdr_players ("
-                    + "uuid TEXT PRIMARY KEY,"
-                    + "day INTEGER NOT NULL DEFAULT 1,"
-                    + "streak INTEGER NOT NULL DEFAULT 0,"
-                    + "total_claims INTEGER NOT NULL DEFAULT 0,"
-                    + "last_claim INTEGER NOT NULL DEFAULT 0,"
-                    + "playtime_at_claim INTEGER NOT NULL DEFAULT 0,"
-                    + "cooldown_skipped INTEGER NOT NULL DEFAULT 0,"
+            st.execute("CREATE TABLE IF NOT EXISTS cdr_players (" + "uuid TEXT PRIMARY KEY,"
+                    + "day INTEGER NOT NULL DEFAULT 1," + "streak INTEGER NOT NULL DEFAULT 0,"
+                    + "total_claims INTEGER NOT NULL DEFAULT 0," + "last_claim INTEGER NOT NULL DEFAULT 0,"
+                    + "playtime_at_claim INTEGER NOT NULL DEFAULT 0," + "cooldown_skipped INTEGER NOT NULL DEFAULT 0,"
                     + "finished INTEGER NOT NULL DEFAULT 0)");
         }
     }

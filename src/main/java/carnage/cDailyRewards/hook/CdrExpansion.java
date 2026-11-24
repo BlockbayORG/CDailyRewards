@@ -7,7 +7,10 @@ import carnage.cDailyRewards.util.Text;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
 
-/** %cdr_day% %cdr_streak% %cdr_total_claims% %cdr_time_left% %cdr_can_claim% %cdr_days% */
+/**
+ * %cdr_day% %cdr_streak% %cdr_total_claims% %cdr_time_left% %cdr_can_claim%
+ * %cdr_days%
+ */
 public final class CdrExpansion extends PlaceholderExpansion {
 
     private final CDailyRewards plugin;
@@ -38,10 +41,13 @@ public final class CdrExpansion extends PlaceholderExpansion {
 
     @Override
     public String onRequest(OfflinePlayer player, String params) {
-        if (params.equals("days")) return String.valueOf(plugin.settings().days);
-        if (player == null) return "";
+        if (params.equals("days"))
+            return String.valueOf(plugin.settings().days);
+        if (player == null)
+            return "";
         PlayerData d = plugin.data().get(player.getUniqueId());
-        if (d == null) return "";
+        if (d == null)
+            return "";
         return switch (params) {
             case "day" -> String.valueOf(d.day());
             case "streak" -> String.valueOf(d.streak());

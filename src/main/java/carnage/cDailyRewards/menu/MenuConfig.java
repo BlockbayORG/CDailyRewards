@@ -44,10 +44,12 @@ public final class MenuConfig {
             for (int c = 0; c < 9; c++) {
                 char ch = c < row.length() ? row.charAt(c) : ' ';
                 layout[r * 9 + c] = ch;
-                if (ch == 'D') daySlots.add(r * 9 + c);
+                if (ch == 'D')
+                    daySlots.add(r * 9 + c);
             }
         }
-        if (daySlots.isEmpty()) log.warning("menus/main.yml: layout has no 'D' day slots");
+        if (daySlots.isEmpty())
+            log.warning("menus/main.yml: layout has no 'D' day slots");
 
         ConfigurationSection items = cfg.getConfigurationSection("items");
         if (items != null) {
@@ -65,7 +67,9 @@ public final class MenuConfig {
     }
 
     private static void loadStates(ConfigurationSection sec, Map<String, ItemParser> into, Logger log) {
-        if (sec == null) return;
-        for (String state : sec.getKeys(false)) into.put(state, ItemParser.of(sec.getConfigurationSection(state), log));
+        if (sec == null)
+            return;
+        for (String state : sec.getKeys(false))
+            into.put(state, ItemParser.of(sec.getConfigurationSection(state), log));
     }
 }

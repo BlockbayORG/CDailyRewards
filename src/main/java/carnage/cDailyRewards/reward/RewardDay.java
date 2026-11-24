@@ -11,9 +11,11 @@ public record RewardDay(int day, boolean milestone, List<Reward> rewards, ItemPa
         List<String> lines = new ArrayList<>();
         for (Reward r : rewards) {
             String line = r.displayLine();
-            if (line != null) lines.add(line);
+            if (line != null)
+                lines.add(line);
         }
-        if (lines.isEmpty()) lines.add("<dark_gray>• <gray>???");
+        if (lines.isEmpty())
+            lines.add("<dark_gray>• <gray>???");
         return lines;
     }
 }

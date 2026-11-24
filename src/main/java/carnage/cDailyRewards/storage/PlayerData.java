@@ -3,7 +3,8 @@ package carnage.cDailyRewards.storage;
 import java.util.UUID;
 
 /**
- * Daily progress of one player. Only touched on the main thread; storage gets a {@link #copy()}.
+ * Daily progress of one player. Only touched on the main thread; storage gets a
+ * {@link #copy()}.
  */
 public final class PlayerData {
 
@@ -46,19 +47,49 @@ public final class PlayerData {
         finished = false;
     }
 
-    public UUID uuid() { return uuid; }
-    public int day() { return day; }
-    public void day(int day) { this.day = day; }
-    public int streak() { return streak; }
-    public void streak(int streak) { this.streak = streak; }
-    public int totalClaims() { return totalClaims; }
-    public void totalClaims(int totalClaims) { this.totalClaims = totalClaims; }
-    public long lastClaim() { return lastClaim; }
-    public void lastClaim(long lastClaim) { this.lastClaim = lastClaim; }
-    public long playtimeAtClaim() { return playtimeAtClaim; }
-    public void playtimeAtClaim(long playtimeAtClaim) { this.playtimeAtClaim = playtimeAtClaim; }
-    public boolean cooldownSkipped() { return cooldownSkipped; }
-    public void cooldownSkipped(boolean cooldownSkipped) { this.cooldownSkipped = cooldownSkipped; }
-    public boolean finished() { return finished; }
-    public void finished(boolean finished) { this.finished = finished; }
+    public UUID uuid() {
+        return uuid;
+    }
+    public int day() {
+        return day;
+    }
+    public void day(int day) {
+        this.day = day;
+    }
+    public int streak() {
+        return streak;
+    }
+    public void streak(int streak) {
+        this.streak = streak;
+    }
+    public int totalClaims() {
+        return totalClaims;
+    }
+    public void totalClaims(int totalClaims) {
+        this.totalClaims = totalClaims;
+    }
+    public long lastClaim() {
+        return lastClaim;
+    }
+    public void lastClaim(long lastClaim) {
+        this.lastClaim = lastClaim;
+    }
+    public long playtimeAtClaim() {
+        return playtimeAtClaim;
+    }
+    public void playtimeAtClaim(long playtimeAtClaim) {
+        this.playtimeAtClaim = playtimeAtClaim;
+    }
+    public boolean cooldownSkipped() {
+        return cooldownSkipped;
+    }
+    public void cooldownSkipped(boolean cooldownSkipped) {
+        this.cooldownSkipped = cooldownSkipped;
+    }
+    public boolean finished() {
+        return finished;
+    }
+    public void finished(boolean finished) {
+        this.finished = finished;
+    }
 }

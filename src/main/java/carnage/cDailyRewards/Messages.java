@@ -22,11 +22,13 @@ public final class Messages {
         Player p = to instanceof Player pl ? pl : null;
         if (cfg.isList(key)) {
             List<String> lines = cfg.getStringList(key);
-            for (String line : lines) to.sendMessage(Text.parse(Text.replace(line, vars), p));
+            for (String line : lines)
+                to.sendMessage(Text.parse(Text.replace(line, vars), p));
             return;
         }
         String msg = cfg.getString(key);
-        if (msg == null || msg.isEmpty()) return;
+        if (msg == null || msg.isEmpty())
+            return;
         to.sendMessage(Text.parse(prefix + Text.replace(msg, vars), p));
     }
 

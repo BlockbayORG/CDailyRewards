@@ -9,8 +9,7 @@ import java.util.Map;
 public record RewardContext(CDailyRewards plugin, Player player, int day, double multiplier) {
 
     public String apply(String s) {
-        return s.replace("%player%", player.getName())
-                .replace("%uuid%", player.getUniqueId().toString())
+        return s.replace("%player%", player.getName()).replace("%uuid%", player.getUniqueId().toString())
                 .replace("%day%", String.valueOf(day));
     }
 

@@ -19,7 +19,8 @@ import java.util.stream.Stream;
 /** /cdr reload | reset | setday | skipcooldown | give | voucher give | info */
 public final class AdminCommand implements TabExecutor {
 
-    private static final List<String> SUBS = List.of("reload", "reset", "setday", "skipcooldown", "give", "voucher", "info");
+    private static final List<String> SUBS = List.of("reload", "reset", "setday", "skipcooldown", "give", "voucher",
+            "info");
 
     private final CDailyRewards plugin;
 
@@ -55,11 +56,13 @@ public final class AdminCommand implements TabExecutor {
             }));
             case "setday" -> withTarget(sender, args, 1, target -> {
                 Integer day = parseDay(sender, args, 2);
-                if (day == null) return;
+                if (day == null)
+                    return;
                 plugin.data().edit(target.getUniqueId(), d -> {
                     d.day(day);
                     d.finished(false);
-                    plugin.messages().send(sender, "admin-setday", Map.of("%player%", name(target), "%day%", String.valueOf(day)));
+                    plugin.messages().send(sender, "admin-setday",
+                            Map.of("%player%", name(target), "%day%", String.valueOf(day)));
                 });
             });
             case "skipcooldown" -> withTarget(sender, args, 1, target -> plugin.data().edit(target.getUniqueId(), d -> {
@@ -68,11 +71,14 @@ public final class AdminCommand implements TabExecutor {
             }));
             case "give" -> {
                 Player target = online(sender, args, 1);
-                if (target == null) return true;
+                if (target == null)
+                    return true;
                 Integer day = parseDay(sender, args, 2);
-                if (day == null) return true;
+                if (day == null)
+                    return true;
                 plugin.claims().giveDay(target, day);
-                plugin.messages().send(sender, "admin-give", Map.of("%player%", target.getName(), "%day%", String.valueOf(day)));
+                plugin.messages().send(sender, "admin-give",
+                        Map.of("%player%", target.getName(), "%day%", String.valueOf(day)));
             }
             case "voucher" -> {
                 if (args.length < 4 || !args[1].equalsIgnoreCase("give")) {
@@ -80,7 +86,8 @@ public final class AdminCommand implements TabExecutor {
                     return true;
                 }
                 Player target = online(sender, args, 2);
-                if (target == null) return true;
+                if (target == null)
+                    return true;
                 VoucherManager.Voucher v = plugin.vouchers().get(args[3]);
                 if (v == null) {
                     plugin.messages().send(sender, "voucher-unknown", Map.of("%id%", args[3]));
@@ -97,24 +104,26 @@ public final class AdminCommand implements TabExecutor {
                     target.getInventory().addItem(plugin.vouchers().create(v, target)).values()
                             .forEach(left -> target.getWorld().dropItemNaturally(target.getLocation(), left));
                 }
-                plugin.messages().send(sender, "voucher-given", Map.of("%player%", target.getName(), "%id%", v.id(), "%amount%", String.valueOf(amount)));
+                plugin.messages().send(sender, "voucher-given",
+                        Map.of("%player%", target.getName(), "%id%", v.id(), "%amount%", String.valueOf(amount)));
             }
             case "info" -> withTarget(sender, args, 1, target -> plugin.data().edit(target.getUniqueId(), d -> {
-                String last = d.lastClaim() == 0 ? "never" : new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date(d.lastClaim()));
-                plugin.messages().send(sender, "admin-info", Map.of(
-                        "%player%", name(target),
-                        "%day%", String.valueOf(d.day()),
-                        "%streak%", String.valueOf(d.streak()),
-                        "%total%", String.valueOf(d.totalClaims()),
-                        "%last%", last,
-                        "%can_claim%", String.valueOf(plugin.claims().state(d) == ClaimService.State.AVAILABLE)));
+                String last = d.lastClaim() == 0
+                        ? "never"
+                        : new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date(d.lastClaim()));
+                plugin.messages().send(sender, "admin-info",
+                        Map.of("%player%", name(target), "%day%", String.valueOf(d.day()), "%streak%",
+                                String.valueOf(d.streak()), "%total%", String.valueOf(d.totalClaims()), "%last%", last,
+                                "%can_claim%",
+                                String.valueOf(plugin.claims().state(d) == ClaimService.State.AVAILABLE)));
             }));
             default -> plugin.messages().send(sender, "admin-help", Map.of());
         }
         return true;
     }
 
-    private void withTarget(CommandSender sender, String[] args, int idx, java.util.function.Consumer<OfflinePlayer> action) {
+    private void withTarget(CommandSender sender, String[] args, int idx,
+            java.util.function.Consumer<OfflinePlayer> action) {
         if (args.length <= idx) {
             plugin.messages().send(sender, "admin-help", Map.of());
             return;
@@ -134,7 +143,8 @@ public final class AdminCommand implements TabExecutor {
 
     private Player online(CommandSender sender, String[] args, int idx) {
         Player p = args.length > idx ? Bukkit.getPlayerExact(args[idx]) : null;
-        if (p == null) plugin.messages().send(sender, "player-not-found", Map.of());
+        if (p == null)
+            plugin.messages().send(sender, "player-not-found", Map.of());
         return p;
     }
 
@@ -142,7 +152,8 @@ public final class AdminCommand implements TabExecutor {
         int max = plugin.settings().days;
         try {
             int day = Integer.parseInt(args[idx]);
-            if (day >= 1 && day <= max) return day;
+            if (day >= 1 && day <= max)
+                return day;
         } catch (NumberFormatException | ArrayIndexOutOfBoundsException ignored) {
         }
         plugin.messages().send(sender, "admin-invalid-day", Map.of("%max%", String.valueOf(max)));
@@ -159,9 +170,11 @@ public final class AdminCommand implements TabExecutor {
         if (args.length == 1) {
             options = SUBS.stream();
         } else if (args.length == 2) {
-            options = args[0].equalsIgnoreCase("voucher") ? Stream.of("give")
-                    : args[0].equalsIgnoreCase("reload") ? Stream.empty()
-                    : Bukkit.getOnlinePlayers().stream().map(Player::getName);
+            options = args[0].equalsIgnoreCase("voucher")
+                    ? Stream.of("give")
+                    : args[0].equalsIgnoreCase("reload")
+                            ? Stream.empty()
+                            : Bukkit.getOnlinePlayers().stream().map(Player::getName);
         } else if (args.length == 3 && args[0].equalsIgnoreCase("voucher")) {
             options = Bukkit.getOnlinePlayers().stream().map(Player::getName);
         } else if (args.length == 4 && args[0].equalsIgnoreCase("voucher")) {
